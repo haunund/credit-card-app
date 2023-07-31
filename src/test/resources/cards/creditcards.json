@@ -1,0 +1,37 @@
+[
+  {
+    "cardNumber": 4242424242424242,
+    "cardHolderName": "Hemraj",
+    "expiryDate": "12/07/2022"
+  },
+  {
+    "cardNumber": 4000056655665556,
+    "cardHolderName": "Nikhil",
+    "expiryDate": "12/07/2022"
+  },
+  {
+    "cardNumber": 5555555555554444,
+    "cardHolderName": "Pawan",
+    "expiryDate": "12/07/2022"
+  },
+  {
+    "cardNumber": 2223003122003222,
+    "cardHolderName": "Abhi",
+    "expiryDate": "12/07/2022"
+  },
+  {
+    "cardNumber": 5105105105105100,
+    "cardHolderName": "Parv",
+    "expiryDate": "12/07/2022"
+  },
+  {
+    "cardNumber": 5105105105105101,
+    "cardHolderName": "Luck",
+    "expiryDate": "12/07/2022"
+  },
+  {
+    "cardNumber": 5105105105105101,
+    "cardHolderName": "Vik",
+    "expiryDate": "12/07/2022"
+  }
+]
