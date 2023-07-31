@@ -77,7 +77,7 @@ CreditCard creditCard;
 
         Multi<CreditCard> CreditCards = CreditCard.streamAllCreditCards();
 
-        String creditCardsFileName = "creditcards.json";
+        String creditCardsFileName = "creditcards.xml";
 
         try {
             if (creditCardsFileName.endsWith(".csv")) {
@@ -91,7 +91,7 @@ CreditCard creditCard;
             }
 
         }catch(Exception e){
-            System.out.print("Error while Parsing File:"+e);
+            System.out.print("Error while Parsing File: "+e);
         }
        return  Response.ok("Parsed file and inserted credit cards").build();
       //  return Response.ok( csvParserService.readFilename("cards/creditcards.csv")).build();

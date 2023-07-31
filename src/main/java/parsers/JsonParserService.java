@@ -17,11 +17,11 @@ import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
+import entity.models.Card;
+import entity.models.CardFactory;
+import entity.models.CardFactoryImpl;
 import io.smallrye.mutiny.Uni;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -90,30 +90,23 @@ public class JsonParserService {
         return objectMapper.readValue(jsonStream, CreditCard.class);
     }
 
-    public void processRecords( List<CreditCard> creditCards){
+    public void processRecords( List<CreditCard> creditCards) throws Exception {
 
         //   Iterator<CreditCard> iterator = JsonFileIterator.getRecordsIterator(creditCards);
         Iterator<CreditCard>   iterator = creditCards.iterator();
-
+        //Use the iterator to save the credit cards
         while (iterator.hasNext()) {
             CreditCard creditCard = iterator.next();
 
-            CreditCard creditCardEntity = new CreditCard();
-            creditCardEntity.setCardNumber(creditCard.getCardNumber());
-            creditCardEntity.setCardHolderName(creditCard.getCardHolderName());
-            creditCardEntity.setExpiryDate(creditCard.getExpiryDate());
-            creditCardEntity.setCreationDate(LocalDateTime.now()) ;
+          //  creditCards.add(creditCard);
+            CardFactory cardFactory = new CardFactoryImpl();
+            Card card = cardFactory.createCard(creditCard.getCardNumber());
+            // processCreditCardService.processMultipleCreditCards((ArrayList<CreditCard>) creditCards);
 
+            if (Objects.nonNull(card)) {
+                processCreditCardService.saveCreditCard(creditCard);
 
-            Uni.createFrom().item(creditCardEntity);
-            Uni<String> resultUni = processCreditCardService.processSingleCreditCard((CreditCard) creditCardEntity);
-
-            // Now you need to subscribe to the Uni to trigger the processing and persistence
-            resultUni.subscribe().with(savedCreditCard -> {
-
-                // Handle the result if needed
-                LOGGER.debug("Saved CreditCard for json parser: " );
-            });
+            }
 
         }
 

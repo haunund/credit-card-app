@@ -25,9 +25,7 @@ import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -38,7 +36,6 @@ import java.nio.charset.StandardCharsets;
 import entity.models.*;
 import entity.models.Card;
 
-import java.util.Objects;
 import process.*;
 import security.AESEncryptionService;
 
@@ -95,36 +92,22 @@ public class CsvParserService extends  PanacheMongoEntityBase {
                 //Read csv and create new Creditcard entity
                 int count = 1;
                 while ((record = csvReader.readNext()) != null) {
+                    System.out.println(Arrays.toString(record));
                     if (record.length >= 3) {
+
+                        CardFactory cardFactory = new CardFactoryImpl();
+                        Card card = cardFactory.createCard(record[0]);
+
                         CreditCard creditCard = new CreditCard();
+
                         creditCard.setCardNumber(record[0]);
                         creditCard.setCardHolderName(record[1]);
                         creditCard.setExpiryDate(record[2]);
+                        creditCard.setCreationDate(LocalDateTime.now()) ;
 
-                        // Add other fields if present in the CSV
-
-                        creditCards.add(creditCard);
-                        CardFactory cardFactory = new CardFactoryImpl();
-                        Card card = cardFactory.createCard(record[0]);
-                       // processCreditCardService.processMultipleCreditCards((ArrayList<CreditCard>) creditCards);
-
+                        //Check whether the card is valid or not
                         if (Objects.nonNull(card)) {
-                           //creditCard.persist();
-                            CreditCard creditCardEntity = new CreditCard();
-                            creditCardEntity.setId(new ObjectId());
-                            creditCardEntity.setCardNumber(aesEncryptionService.encrypt(creditCard.getCardNumber()));
-                            creditCardEntity.setCardHolderName(creditCard.getCardHolderName());
-                            creditCardEntity.setExpiryDate(creditCard.getExpiryDate());
-                            creditCardEntity.setCreationDate(LocalDateTime.now()) ;
-
-                            Uni.createFrom().item(creditCardEntity);
-                            Uni<String> resultUni = processCreditCardService.processSingleCreditCard((CreditCard) creditCardEntity);
-
-                            // Now you need to subscribe to the Uni to trigger the processing and persistence
-                            resultUni.subscribe().with(savedCreditCard -> {
-                                // Handle the result if needed
-                               LOGGER.debug("Saved CreditCard: {}", creditCard );
-                            });
+                            processCreditCardService.saveCreditCard(creditCard);
 
                         }
 

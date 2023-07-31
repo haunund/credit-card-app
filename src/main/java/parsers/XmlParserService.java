@@ -20,8 +20,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import entity.models.Card;
+import entity.models.CardFactory;
+import entity.models.CardFactoryImpl;
 import io.smallrye.mutiny.Uni;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -34,7 +38,6 @@ import security.AESEncryptionService;
 public class XmlParserService {
 
     private XmlMapper xmlMapper;
-
 
     @Inject
     ProcessCreditCardService processCreditCardService;
@@ -78,17 +81,21 @@ public class XmlParserService {
         cards = parseXml(inputStream);
         for (CreditCard card : cards) {
 
-         CreditCard creditCardEntity = new CreditCard();
-            creditCardEntity.setId(new ObjectId());
-            creditCardEntity.setCardNumber(aesEncryptionService.encrypt(card.getCardNumber()));
-            creditCardEntity.setCardHolderName(card.getCardHolderName());
-            creditCardEntity.setExpiryDate(card.getExpiryDate());
-            creditCardEntity.setCreationDate(LocalDateTime.now()) ;
+            CardFactory cardFactory = new CardFactoryImpl();
+            Card createdCard = cardFactory.createCard(card.cardNumber);
 
-            Uni.createFrom().item(creditCardEntity);
-            Uni<String> resultUni = processCreditCardService.processSingleCreditCard((CreditCard) creditCardEntity);
+            if (Objects.nonNull(createdCard)) {
+              CreditCard   creditCard = new CreditCard();
+
+                creditCard.setCardNumber(card.getCardNumber());
+                creditCard.setCardHolderName(card.getCardHolderName());
+                creditCard.setExpiryDate(card.getExpiryDate());
+                creditCard.setCreationDate(LocalDateTime.now());
+
+                processCreditCardService.saveCreditCard(creditCard);
+
+            }
         }
-
         return cards;
     }
 

@@ -19,15 +19,22 @@ To run the project, start docker with mongo
 You can also create/update/delete creditcards in mongo via the endpoints
 You can process the creditcards and it will take the credit cards and insert in mongo and encrypt the card number as well
 
+## Running the application in dev mode with live coding
+
+./mvnw compile quarkus:dev or mvn quarkus:dev
 
 
 ## Run mongodb in Docker container first  git 
 
     docker run -ti --rm -p 27017:27017 mongo:4.0
 
-## Running the application in dev mode with live coding
 
-./mvnw compile quarkus:dev or mvn quarkus:dev
+## Keycloak
+
+    docker run --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -p 8543:8443 -v "$(pwd)"/config/keycloak-keystore.jks:/etc/keycloak-keystore.jks quay.io/keycloak/keycloak:17.0.0 start  --hostname-strict=false --https-key-store-file=/etc/keycloak-keystore.jks
+
+
+
 
 ## GET All Creditcards 
 
@@ -63,3 +70,16 @@ You can process the creditcards and it will take the credit cards and insert in 
 ## delete creditcard by id
 
     $ curl -X DELETE "http://localhost:8080/creditcards/64c3a4aeb63aed2624f07d14"
+
+
+## Change the filename  creditcards.json or creditcards.xml  in ReactiveCreditCardResource.java on line 80
+
+    creditCardsFileName = "creditcards.csv";    
+    Process the credit cards, only valid cards will be saved 
+    Go to http://localhost:8080/creditcards to view the results 
+    Some data will be encrypted with  AESEncryption.
+
+## Process credit cards :
+
+$ curl -X  POST localhost:8080/creditcards/process
+
