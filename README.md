@@ -28,14 +28,6 @@ You can process the creditcards and it will take the credit cards and insert in 
 
     docker run -ti --rm -p 27017:27017 mongo:4.0
 
-
-## Keycloak
-
-    docker run --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -p 8543:8443 -v "$(pwd)"/config/keycloak-keystore.jks:/etc/keycloak-keystore.jks quay.io/keycloak/keycloak:17.0.0 start  --hostname-strict=false --https-key-store-file=/etc/keycloak-keystore.jks
-
-
-
-
 ## GET All Creditcards 
 
     $ curl "localhost:8080/creditcards"
@@ -82,4 +74,14 @@ You can process the creditcards and it will take the credit cards and insert in 
 ## Process credit cards :
 
 $ curl -X  POST localhost:8080/creditcards/process
+
+## For authentication, we must start keycloak on docker, though it is still a work in progress and the details are located here :
+
+## Keycloak
+
+    docker run --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -p 8543:8443 -v "$(pwd)"/config/keycloak-keystore.jks:/etc/keycloak-keystore.jks quay.io/keycloak/keycloak:17.0.0 start-dev  --hostname-strict=false
+
+## Keycloak dev url : http://localhost:8080/q/dev/io.quarkus.quarkus-vertx-http/config?filterByExtension=Keycloak%20Authorization&filterConfigKeys=quarkus.oidc.,quarkus.keycloak.
+
+## quarkus.oidc.auth-server-url  : http://localhost:51619/realms/quarkus
 
