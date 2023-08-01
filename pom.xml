@@ -126,8 +126,32 @@
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-core</artifactId>
-      <version>4.6.0.Final</version>
+      <version>4.6.1.Final</version>
     </dependency>
+
+
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-oidc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+    </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-test-keycloak-server</artifactId>
+      <scope>test</scope>
+    </dependency>
+
 
   </dependencies>
   <build>
