@@ -72,13 +72,4 @@ public class ReactiveUserResource {
     }
 
 
-    /*
-    @PUT
-    @Path("/{id}/comment")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Response> addCommentToUser(@PathParam("id") String id, Comment comment) {
-        return User.addCommentToUser(comment, id).map(v -> Response.accepted(v).build());
-    }
- */
 }

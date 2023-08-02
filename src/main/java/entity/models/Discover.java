@@ -1,6 +1,4 @@
 package entity.models;
-import javax.enterprise.context.ApplicationScoped;
-import  entity.models.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
@@ -14,9 +12,11 @@ public class Discover  extends  Card {
     @Override
     public boolean validate(String cardNumber) {
 
-        if (Objects.isNull(cardNumber) || StringUtils.isBlank(cardNumber)) {
+        //test if card number is null and checksum is valid
+        if (Objects.isNull(cardNumber) || StringUtils.isBlank(cardNumber) || !this.isChecksumValid(cardNumber)) {
             return  false;
         }
+
         // Remove any whitespace or non-numeric characters from the card number
         cardNumber = cardNumber.replaceAll("\\s+", "");
 

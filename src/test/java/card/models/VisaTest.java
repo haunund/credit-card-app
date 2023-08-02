@@ -10,8 +10,8 @@ public class VisaTest {
 
     @Test
     public void testValidVisaCard() {
-        Visa visa = new Visa("4111111111111111");
-        boolean isValid = visa.validate("4111111111111111");
+        Visa visa = new Visa("4222222222222");
+        boolean isValid = visa.validate("4222222222222");
         assertTrue(isValid);
     }
 

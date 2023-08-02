@@ -98,7 +98,6 @@ public class JsonParserService {
         while (iterator.hasNext()) {
             CreditCard creditCard = iterator.next();
 
-          //  creditCards.add(creditCard);
             CardFactory cardFactory = new CardFactoryImpl();
             Card card = cardFactory.createCard(creditCard.getCardNumber());
             // processCreditCardService.processMultipleCreditCards((ArrayList<CreditCard>) creditCards);

@@ -90,7 +90,7 @@ public class CsvParserService extends  PanacheMongoEntityBase {
 
                 String[] record;
                 //Read csv and create new Creditcard entity
-                int count = 1;
+                int count = 0;
                 while ((record = csvReader.readNext()) != null) {
                     System.out.println(Arrays.toString(record));
                     if (record.length >= 3) {
@@ -104,13 +104,13 @@ public class CsvParserService extends  PanacheMongoEntityBase {
                         creditCard.setCardHolderName(record[1]);
                         creditCard.setExpiryDate(record[2]);
                         creditCard.setCreationDate(LocalDateTime.now()) ;
-
+                        creditCards.add(count, creditCard);
                         //Check whether the card is valid or not
                         if (Objects.nonNull(card)) {
                             processCreditCardService.saveCreditCard(creditCard);
 
                         }
-
+                        count++;
                     } else {
                         // Handle invalid records with insufficient fields
                         LOGGER.debug("Invalid CreditCard: {}", record );
