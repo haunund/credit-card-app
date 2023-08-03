@@ -36,20 +36,20 @@ import security.AESEncryptionService;
 
 @ApplicationScoped
 public class JsonParserService {
-    @Inject
-    ProcessCreditCardService processCreditCardService;
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvParserService.class);
-
     @Inject
     public AESEncryptionService aesEncryptionService;
     @Inject
+    ProcessCreditCardService processCreditCardService;
+    @Inject
     ReactiveCreditCardResource reactiveCreditCardResource;
     private List<String> records;
+
     public JsonParserService() {
         records = new ArrayList<>();
     }
 
-   // @Override
+    // @Override
     // Read the json file and parse the data
     public List<CreditCard> readFilename(String inputFilename) throws IOException {
         List<CreditCard> creditCards = new ArrayList<>();
@@ -69,17 +69,18 @@ public class JsonParserService {
             } catch (Exception e) {
                 // You can throw a more specific custom exception or just IOException if needed
                 throw new IOException("An error occurred while parsing JSON", e);
-            }  finally {
+            } finally {
                 inputStream.close();
             }
         } else {
             // Handle file not found scenario
-            LOGGER.debug("File not found: {}", inputFilename );
+            LOGGER.debug("File not found: {}", inputFilename);
         }
 
         return creditCards;
     }
-    public  CreditCard parse() throws IOException {
+
+    public CreditCard parse() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         InputStream jsonStream = this.getClass().getClassLoader().getResourceAsStream("cards/creditcards.json");
 
@@ -90,10 +91,10 @@ public class JsonParserService {
         return objectMapper.readValue(jsonStream, CreditCard.class);
     }
 
-    public void processRecords( List<CreditCard> creditCards) throws Exception {
+    public void processRecords(List<CreditCard> creditCards) throws Exception {
 
         //   Iterator<CreditCard> iterator = JsonFileIterator.getRecordsIterator(creditCards);
-        Iterator<CreditCard>   iterator = creditCards.iterator();
+        Iterator<CreditCard> iterator = creditCards.iterator();
         //Use the iterator to save the credit cards
         while (iterator.hasNext()) {
             CreditCard creditCard = iterator.next();

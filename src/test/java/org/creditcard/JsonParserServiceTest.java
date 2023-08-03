@@ -36,6 +36,7 @@ class JsonParserServiceTest {
         List<CreditCard> creditCards = jsonParserService.readFilename(inputFilename);
         assertEquals(0, creditCards.size());
     }
+
     @Test
     public void testReadInvalidJsonFile() throws IOException {
         String inputFilename = "cards/creditcards-invalid.json";

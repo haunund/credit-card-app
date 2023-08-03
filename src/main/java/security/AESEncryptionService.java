@@ -6,6 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+
 import security.EncryptionConfig;
 
 @ApplicationScoped

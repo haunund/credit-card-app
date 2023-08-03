@@ -5,18 +5,18 @@ public abstract class Card {
 
     public String cardNumber;
 
-    public Card(String cardNumber){
+    public Card(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
     protected abstract boolean validate(String cardNumber);
 
-    public String getCardNumber(){
+    public String getCardNumber() {
         return this.cardNumber;
     }
 
 
-    public  boolean isChecksumValid(String cardNumber) {
+    public boolean isChecksumValid(String cardNumber) {
         // Step 1: Remove all non-digit characters (e.g., spaces and dashes)
         cardNumber = cardNumber.replaceAll("[^0-9]", "");
 

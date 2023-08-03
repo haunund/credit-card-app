@@ -37,32 +37,44 @@ import security.AESEncryptionService;
 @ApplicationScoped
 public class XmlParserService {
 
-    private XmlMapper xmlMapper;
-
-    @Inject
-    ProcessCreditCardService processCreditCardService;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlParserService.class);
     @Inject
     public AESEncryptionService aesEncryptionService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(XmlParserService.class);
-
+    @Inject
+    ProcessCreditCardService processCreditCardService;
     @Inject
     ReactiveCreditCardResource reactiveCreditCardResource;
+    private XmlMapper xmlMapper;
     private List<String> records;
+
     public XmlParserService() {
         records = new ArrayList<>();
     }
 
-   // @Override
+    public static List<CreditCard> parseXml(InputStream inputStream) throws IOException {
+        XmlMapper xmlMapper = new XmlMapper();
+
+        // Enable FAIL_ON_UNKNOWN_PROPERTIES to throw UnrecognizedPropertyException
+        xmlMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        //try {
+        return xmlMapper.readValue(inputStream, new TypeReference<List<CreditCard>>() {
+        });
+        /*} catch (UnrecognizedPropertyException | TechnicalRuntimeException e) {
+            throw new TechnicalRuntimeException("An error occurred while parsing xmlss", e);
+        } */
+    }
+
+    // @Override
     public List<String> readFile(String inputFilename) throws FileSystemException {
         try {
             records.addAll(Files.readAllLines(Paths.get(inputFilename)));
 
             System.out.println(records);
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
-           // throw new FileSystemException("File not found: creditcards.json");
+            // throw new FileSystemException("File not found: creditcards.json");
 
             e.printStackTrace();
         }
@@ -85,7 +97,7 @@ public class XmlParserService {
             Card createdCard = cardFactory.createCard(card.cardNumber);
 
             if (Objects.nonNull(createdCard)) {
-              CreditCard   creditCard = new CreditCard();
+                CreditCard creditCard = new CreditCard();
 
                 creditCard.setCardNumber(card.getCardNumber());
                 creditCard.setCardHolderName(card.getCardHolderName());
@@ -99,21 +111,7 @@ public class XmlParserService {
         return cards;
     }
 
-
-    public static List<CreditCard> parseXml(InputStream inputStream) throws IOException {
-        XmlMapper xmlMapper = new XmlMapper();
-
-        // Enable FAIL_ON_UNKNOWN_PROPERTIES to throw UnrecognizedPropertyException
-        xmlMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-        //try {
-            return xmlMapper.readValue(inputStream, new TypeReference<List<CreditCard>>() {});
-        /*} catch (UnrecognizedPropertyException | TechnicalRuntimeException e) {
-            throw new TechnicalRuntimeException("An error occurred while parsing xmlss", e);
-        } */
-    }
-
-    public  CreditCard parse() throws IOException, FileNotFoundException {
+    public CreditCard parse() throws IOException, FileNotFoundException {
 
         ObjectMapper objectMapper;
         InputStream jsonStream;
@@ -128,9 +126,9 @@ public class XmlParserService {
         return objectMapper.readValue(jsonStream, CreditCard.class);
     }
 
-    public void processRecords( List<CreditCard> creditCards){
+    public void processRecords(List<CreditCard> creditCards) {
 
-        Iterator<CreditCard>   iterator =  creditCards.iterator();
+        Iterator<CreditCard> iterator = creditCards.iterator();
 
         while (iterator.hasNext()) {
             CreditCard creditCard = iterator.next();
@@ -139,14 +137,14 @@ public class XmlParserService {
             creditCardEntity.setCardNumber(creditCard.getCardNumber());
             creditCardEntity.setCardHolderName(creditCard.getCardHolderName());
             creditCardEntity.setExpiryDate(creditCard.getExpiryDate());
-            creditCardEntity.setCreationDate(LocalDateTime.now()) ;
+            creditCardEntity.setCreationDate(LocalDateTime.now());
             Uni.createFrom().item(creditCardEntity);
             Uni<String> resultUni = processCreditCardService.processSingleCreditCard((CreditCard) creditCardEntity);
 
             // Now you need to subscribe to the Uni to trigger the processing and persistence
             resultUni.subscribe().with(savedCreditCard -> {
                 // Handle the result if needed
-                System.out.println("Saved CreditCard for xml parser: " );
+                System.out.println("Saved CreditCard for xml parser: ");
             });
         }
 

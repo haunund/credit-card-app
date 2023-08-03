@@ -1,11 +1,12 @@
 package entity.models;
+
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class CardFactoryImpl implements CardFactory {
-    public Card createCard(String cardNumber){
+    public Card createCard(String cardNumber) {
 
-        if (cardNumber.equals("") || !isChecksumValid(cardNumber) ){
+        if (cardNumber.equals("") || !isChecksumValid(cardNumber)) {
             return null;
         }
 
@@ -27,7 +28,7 @@ public class CardFactoryImpl implements CardFactory {
                 } else if (value.length() == 16 && value.charAt(0) == '6') {
                     return new Discover(cardNumber);
 
-                } else if ((value.length() == 13 || value.length() == 16) && value.charAt(0) == '4' ) {
+                } else if ((value.length() == 13 || value.length() == 16) && value.charAt(0) == '4') {
                     return new Visa(cardNumber);
 
                 } else {
@@ -35,7 +36,7 @@ public class CardFactoryImpl implements CardFactory {
                 }
 
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
         return null;

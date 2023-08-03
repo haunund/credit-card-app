@@ -1,39 +1,45 @@
 Quarkus, the Supersonic Subatomic Java Framework.
 This project uses MongoDB with Panache with reactive endpoints by creating/updating entities
 
-
 Key characteristics of reactive endpoints include:
 
-1. Asynchronous: Reactive endpoints use asynchronous processing to handle requests. Instead of blocking a thread while waiting for a response, the server can immediately move on to handle other requests, making more efficient use of resources.
+1. Asynchronous: Reactive endpoints use asynchronous processing to handle requests. Instead of blocking a thread while
+   waiting for a response, the server can immediately move on to handle other requests, making more efficient use of
+   resources.
 
-2. Non-blocking: Reactive endpoints avoid blocking threads for I/O operations, such as reading from databases or making external API calls. Non-blocking I/O allows the server to handle more requests with fewer threads, reducing resource consumption.
+2. Non-blocking: Reactive endpoints avoid blocking threads for I/O operations, such as reading from databases or making
+   external API calls. Non-blocking I/O allows the server to handle more requests with fewer threads, reducing resource
+   consumption.
 
-3. Reactive Streams: Reactive endpoints often use Reactive Streams, a specification that defines a set of interfaces for asynchronous stream processing with non-blocking backpressure. Reactive Streams allow components in the system to communicate efficiently, enabling flow control to handle varying data rates between producers and consumers.
+3. Reactive Streams: Reactive endpoints often use Reactive Streams, a specification that defines a set of interfaces for
+   asynchronous stream processing with non-blocking backpressure. Reactive Streams allow components in the system to
+   communicate efficiently, enabling flow control to handle varying data rates between producers and consumers.
 
-4. Event-Driven: Reactive endpoints are event-driven, meaning they respond to events as they occur, such as new requests arriving or data becoming available. This allows for responsiveness and scalability.
+4. Event-Driven: Reactive endpoints are event-driven, meaning they respond to events as they occur, such as new requests
+   arriving or data becoming available. This allows for responsiveness and scalability.
 
-5. Functional Programming: Reactive programming often involves the use of functional programming concepts, such as higher-order functions, lambdas, and immutability. These concepts make it easier to compose and manage asynchronous operations.
-
+5. Functional Programming: Reactive programming often involves the use of functional programming concepts, such as
+   higher-order functions, lambdas, and immutability. These concepts make it easier to compose and manage asynchronous
+   operations.
 
 To run the project, start docker with mongo
 You can also create/update/delete creditcards in mongo via the endpoints
-You can process the creditcards and it will take the credit cards and insert in mongo and encrypt the card number as well
+You can process the creditcards and it will take the credit cards and insert in mongo and encrypt the card number as
+well
 
 ## Running the application in dev mode with live coding
 
 ./mvnw compile quarkus:dev or mvn quarkus:dev
 
-
-## Run mongodb in Docker container first  git 
+## Run mongodb in Docker container first  git
 
     docker run -ti --rm -p 27017:27017 mongo:4.0
 
-## GET All Creditcards 
+## GET All Creditcards
 
     $ curl "localhost:8080/creditcards"
-    
-## Example Response get all credit cards
 
+## Example Response get all credit cards
 
 ## GET All creditcards by number and cardHolderName
 
@@ -47,7 +53,6 @@ You can process the creditcards and it will take the credit cards and insert in 
 
     $ curl "localhost:8080/creditcards/search2?authors=Hemraj"
 
-
 ## Create Creditcard
 
     $ curl -X POST "localhost:8080/creditcard"
@@ -58,11 +63,9 @@ You can process the creditcards and it will take the credit cards and insert in 
 	"expiryDate":"22/24",
     }
 
-
 ## delete creditcard by id
 
     $ curl -X DELETE "http://localhost:8080/creditcards/64c3a4aeb63aed2624f07d14"
-
 
 ## Change the filename  creditcards.json or creditcards.xml  in ReactiveCreditCardResource.java on line 80
 
@@ -73,7 +76,7 @@ You can process the creditcards and it will take the credit cards and insert in 
 
 ## Process credit cards :
 
-$ curl -X  POST localhost:8080/creditcards/process
+$ curl -X POST localhost:8080/creditcards/process
 
 ## For authentication, we must start keycloak on docker, though it is still a work in progress and the details are located here :
 

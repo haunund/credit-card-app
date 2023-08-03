@@ -1,7 +1,6 @@
 package cardservices;
 
-import cardservices.request.UpdateUser; // Assuming you have an UpdateUser class for updating the User entity
-//import entity.Comment;
+import cardservices.request.UpdateUser;
 import entity.User;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;

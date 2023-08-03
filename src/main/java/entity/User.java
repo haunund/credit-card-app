@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+
 public class User extends ReactivePanacheMongoEntity {
 
     public String firstName;
