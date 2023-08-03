@@ -21,7 +21,8 @@ class XmlParserServiceTest {
 
     @Inject
     XmlParserService xmlParserService;
-  //  @Test
+
+    //  @Test
     public void testReadValidXmlFile() throws Exception {
         String inputFilename = "cards/creditcards.xml";
         List<CreditCard> creditCards = xmlParserService.readFilename(inputFilename);
@@ -32,9 +33,10 @@ class XmlParserServiceTest {
 
     public void testReadNonExistentXmlFile() throws IOException {
         String inputFilename = "cards/creditcards404.xml";
-       assertThrows(FileNotFoundException.class, () -> xmlParserService.readFilename(inputFilename));    }
+        assertThrows(FileNotFoundException.class, () -> xmlParserService.readFilename(inputFilename));
+    }
 
-  //  @Test
+    //  @Test
     public void testReadInvalidXmlFile() throws Exception {
         String inputFilename = "cards/creditcards-invalid.xml";
         List<CreditCard> creditCards = xmlParserService.readFilename(inputFilename);

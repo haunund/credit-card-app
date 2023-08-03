@@ -22,13 +22,13 @@ import java.util.UUID;
 public class ProcessCreditCardService {
 
     @Inject
-    public AESEncryptionService aesEncryptionService;
-    @Inject
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvParserService.class);
+    @Inject
+    public AESEncryptionService aesEncryptionService;
 
     // Method to process all the credit cards
     public void processCreditCards(Multi<CreditCard> creditCards) {
-       // Multi<CreditCard> creditCardStream = myRestClient.processCreditCards(creditCard);
+        // Multi<CreditCard> creditCardStream = myRestClient.processCreditCards(creditCard);
 
         creditCards.subscribe().with(
                 creditCard -> {
@@ -59,16 +59,17 @@ public class ProcessCreditCardService {
 
                 });
     }
+
     public Uni<String> processSingleCreditCard(CreditCard creditCard) {
         // Your processing logic for a single CreditCard
         // This method returns a Uni<String> for demonstration purposes
         creditCard._id = UUID.randomUUID().toString();
         Uni<ReactivePanacheMongoEntityBase> resultUni = creditCard.persist();
-      //  Uni.createFrom();
+        //  Uni.createFrom();
 
         resultUni.subscribe().with(savedCreditCard -> {
             // Handle the result if needed
-            System.out.println("Saved CreditCard: " );
+            System.out.println("Saved CreditCard: ");
         });
         return Uni.createFrom().item("Processed: " + creditCard.getCardNumber());
     }
@@ -81,7 +82,7 @@ public class ProcessCreditCardService {
         creditCardEntity.setCardNumber(aesEncryptionService.encrypt(creditCard.getCardNumber()));
         creditCardEntity.setCardHolderName(creditCard.getCardHolderName());
         creditCardEntity.setExpiryDate(creditCard.getExpiryDate());
-        creditCardEntity.setCreationDate(LocalDateTime.now()) ;
+        creditCardEntity.setCreationDate(LocalDateTime.now());
 
         Uni.createFrom().item(creditCardEntity);
         Uni<String> resultUni = this.processSingleCreditCard((CreditCard) creditCardEntity);
@@ -89,12 +90,10 @@ public class ProcessCreditCardService {
         // Now you need to subscribe to the Uni to trigger the processing and persistence
         resultUni.subscribe().with(savedCreditCard -> {
             // Handle the result if needed
-            LOGGER.debug("Saved CreditCard: {}", creditCard );
+            LOGGER.debug("Saved CreditCard: {}", creditCard);
         });
 
     }
-
-
 
 
 }

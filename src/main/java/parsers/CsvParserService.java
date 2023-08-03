@@ -29,6 +29,7 @@ import java.util.*;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
@@ -41,23 +42,20 @@ import security.AESEncryptionService;
 
 
 @ApplicationScoped
-public class CsvParserService extends  PanacheMongoEntityBase {
+public class CsvParserService extends PanacheMongoEntityBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvParserService.class);
-
-    @Inject
-    ReactiveCreditCardResource reactiveCreditCardResource;
-
-    @Inject
-    ProcessCreditCardService processCreditCardService;
-
     @Inject
     public AESEncryptionService aesEncryptionService;
+    @Inject
+    ReactiveCreditCardResource reactiveCreditCardResource;
+    @Inject
+    ProcessCreditCardService processCreditCardService;
     private List<String> records;
+
     public CsvParserService() {
         records = new ArrayList<>();
     }
-
 
 
     // @Override
@@ -66,10 +64,9 @@ public class CsvParserService extends  PanacheMongoEntityBase {
             records.addAll(Files.readAllLines(Paths.get(inputFilename)));
 
 
+        } catch (Exception e) {
 
-        } catch (Exception e){
-
-           throw new FileSystemException("File not found: creditcards.csv");
+            throw new FileSystemException("File not found: creditcards.csv");
         }
 
         return records;
@@ -103,7 +100,7 @@ public class CsvParserService extends  PanacheMongoEntityBase {
                         creditCard.setCardNumber(record[0]);
                         creditCard.setCardHolderName(record[1]);
                         creditCard.setExpiryDate(record[2]);
-                        creditCard.setCreationDate(LocalDateTime.now()) ;
+                        creditCard.setCreationDate(LocalDateTime.now());
                         creditCards.add(count, creditCard);
                         //Check whether the card is valid or not
                         if (Objects.nonNull(card)) {
@@ -113,10 +110,10 @@ public class CsvParserService extends  PanacheMongoEntityBase {
                         count++;
                     } else {
                         // Handle invalid records with insufficient fields
-                        LOGGER.debug("Invalid CreditCard: {}", record );
+                        LOGGER.debug("Invalid CreditCard: {}", record);
                     }
                 }
-            } catch (CsvValidationException |TechnicalRuntimeException  | FileNotFoundException e) {
+            } catch (CsvValidationException | TechnicalRuntimeException | FileNotFoundException e) {
 
                 throw new TechnicalRuntimeException("An error occurred while parsing csv", e);
 
@@ -127,13 +124,13 @@ public class CsvParserService extends  PanacheMongoEntityBase {
             }
         } else {
             // Handle file not found scenario
-            LOGGER.debug("File not found: {}", inputFilename );
+            LOGGER.debug("File not found: {}", inputFilename);
         }
 
         return creditCards;
     }
 
-    public  CreditCard parse() throws IOException {
+    public CreditCard parse() throws IOException {
 
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -146,7 +143,7 @@ public class CsvParserService extends  PanacheMongoEntityBase {
         return objectMapper.readValue(jsonStream, CreditCard.class);
     }
 
-    public void processRecords( List<CreditCard> creditCards) {
+    public void processRecords(List<CreditCard> creditCards) {
 
         //   Iterator<CreditCard> iterator = JsonFileIterator.getRecordsIterator(creditCards);
         Iterator<CreditCard> iterator = creditCards.iterator();
@@ -167,7 +164,7 @@ public class CsvParserService extends  PanacheMongoEntityBase {
             resultUni.subscribe().with(savedCreditCard -> {
 
                 // Handle the result if needed
-                LOGGER.debug("saved credit card by csv parser: {}", savedCreditCard );
+                LOGGER.debug("saved credit card by csv parser: {}", savedCreditCard);
 
             });
         }

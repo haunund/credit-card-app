@@ -33,7 +33,7 @@ class CreditcardDateTests {
 
     @Test
     public void testValidExpirationDate() throws IOException {
-        String expiryDate ="10/25";
+        String expiryDate = "10/25";
         CreditCard creditCard = getFirstCreditCard();
         creditCard.setExpiryDate(expiryDate);
         assertTrue(validateExpirationDate(expiryDate, creditCard));
@@ -41,8 +41,8 @@ class CreditcardDateTests {
 
     @Test
     public void testInvalidExpirationDate() throws IOException {
-        String expiryDate1 ="10/15";
-        String expiryDate2 ="05/21";
+        String expiryDate1 = "10/15";
+        String expiryDate2 = "05/21";
 
         CreditCard creditCard = getFirstCreditCard();
         creditCard.setExpiryDate(expiryDate1);
@@ -68,22 +68,22 @@ class CreditcardDateTests {
 
     @Test
     public void testInvalidFormatExpirationDate() throws IOException {
-        String expiryDate1 ="1025";
-        String expiryDate2 ="ab/cd";
-        String expiryDate3 ="12@/23";
+        String expiryDate1 = "1025";
+        String expiryDate2 = "ab/cd";
+        String expiryDate3 = "12@/23";
 
         CreditCard creditCard = getFirstCreditCard();
         creditCard.setExpiryDate(expiryDate1);
-      assertFalse(validateExpirationDate(expiryDate1, creditCard));
+        assertFalse(validateExpirationDate(expiryDate1, creditCard));
         creditCard.setExpiryDate(expiryDate2);
-       assertFalse(validateExpirationDate(expiryDate2, creditCard));
+        assertFalse(validateExpirationDate(expiryDate2, creditCard));
         creditCard.setExpiryDate(expiryDate3);
         assertFalse(validateExpirationDate(expiryDate3, creditCard));
     }
 
     @Test
     public void testInvalidMonthExpirationDate() throws IOException {
-        String expiryDate ="13/23";
+        String expiryDate = "13/23";
         CreditCard creditCard = getFirstCreditCard();
         creditCard.setExpiryDate(expiryDate);
         assertFalse(validateExpirationDate(expiryDate, creditCard));
@@ -92,11 +92,12 @@ class CreditcardDateTests {
 
     @Test
     public void testInvalidYearExpirationDate() throws IOException {
-        String expiryDate ="05/00";
+        String expiryDate = "05/00";
         CreditCard creditCard = getFirstCreditCard();
         creditCard.setExpiryDate(expiryDate);
         assertFalse(validateExpirationDate(expiryDate, creditCard));
     }
+
     private boolean validateExpirationDate(String expirationDate, CreditCard creditCard) {
         try {
             // Check if the expirationDate has a valid format (MM/YY)
@@ -107,7 +108,7 @@ class CreditcardDateTests {
             // Extract month and year from expirationDate
             String[] dateParts = expirationDate.split("/");
             int expMonth = Integer.parseInt(dateParts[0]);
-            int expYear = 2000 +Integer.parseInt(dateParts[1]);
+            int expYear = 2000 + Integer.parseInt(dateParts[1]);
 
             // Check if the month is in the valid range (1 to 12)
             if (expMonth < 1 || expMonth > 12) {

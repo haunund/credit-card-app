@@ -1,20 +1,22 @@
 package entity.models;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
 //@ApplicationScoped
-public class Discover  extends  Card {
+public class Discover extends Card {
 
     public Discover(String cardNumber) {
         super(cardNumber);
     }
+
     @Override
     public boolean validate(String cardNumber) {
 
         //test if card number is null and checksum is valid
         if (Objects.isNull(cardNumber) || StringUtils.isBlank(cardNumber) || !this.isChecksumValid(cardNumber)) {
-            return  false;
+            return false;
         }
 
         // Remove any whitespace or non-numeric characters from the card number

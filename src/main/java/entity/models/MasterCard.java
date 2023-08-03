@@ -15,7 +15,7 @@ public class MasterCard extends Card {
 
         //test if card number is null and checksum is valid
         if (Objects.isNull(cardNumber) || StringUtils.isBlank(cardNumber) || !this.isChecksumValid(cardNumber)) {
-            return  false;
+            return false;
         }
 
         // Remove any non-numeric characters from the card number

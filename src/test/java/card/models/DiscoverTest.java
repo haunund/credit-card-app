@@ -2,6 +2,7 @@ package card.models;
 
 import entity.models.Discover;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 

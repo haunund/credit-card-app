@@ -27,21 +27,46 @@ public class CreditCard extends ReactivePanacheMongoEntityBase {
     public String _id;
     public String cardNumber;
     public String cardHolderName;
-    public  String expiryDate;
-    public LocalDateTime  creationDate;
+    public String expiryDate;
+    public LocalDateTime creationDate;
 
     @Inject
-    public  AESEncryptionService aesEncryptionService;
+    public AESEncryptionService aesEncryptionService;
 
-   @Inject
-   public ProcessCreditCardService processCreditCardService;
+    @Inject
+    public ProcessCreditCardService processCreditCardService;
 
 
-   public CreditCard(){
-       this._id = UUID.randomUUID().toString();
+    public CreditCard() {
+        this._id = UUID.randomUUID().toString();
 
-   }
-    public  Uni<CreditCard> updateCreditCard(String id, UpdateCreditCard updateCreditCard) {
+    }
+
+    public static Uni<Void> deleteCreditCard(String creditCardId) {
+        Uni<CreditCard> creditCardUni = findById(new ObjectId(creditCardId));
+
+        return creditCardUni.call(creditCard -> {
+            // In case there are other operations or checks related to CreditCard deletion, you can add them here
+
+            return Uni.createFrom().item(creditCard);
+        }).chain(creditCard -> {
+            if (creditCard == null) {
+                throw new NotFoundException();
+            }
+            return creditCard.delete();
+        });
+    }
+
+    public static Multi<CreditCard> streamAllCreditCards() {
+        return streamAll();
+    }
+
+    // Assuming that the credit card entity has a field "userId" to identify the user associated with the card
+    public static Multi<CreditCard> streamAllCreditCardsByUserId(String userId) {
+        return stream("userId", userId);
+    }
+
+    public Uni<CreditCard> updateCreditCard(String id, UpdateCreditCard updateCreditCard) {
         Uni<CreditCard> creditCardUni = findById(new ObjectId(id));
         // Add all operations  or checks related to CreditCard update here
 
@@ -69,32 +94,8 @@ public class CreditCard extends ReactivePanacheMongoEntityBase {
         return creditCardUni;
     }
 
-    public static Uni<Void> deleteCreditCard(String creditCardId) {
-        Uni<CreditCard> creditCardUni = findById(new ObjectId(creditCardId));
-
-        return creditCardUni.call(creditCard -> {
-            // In case there are other operations or checks related to CreditCard deletion, you can add them here
-
-            return Uni.createFrom().item(creditCard);
-        }).chain(creditCard -> {
-            if (creditCard == null) {
-                throw new NotFoundException();
-            }
-            return creditCard.delete();
-        });
-    }
-
-    public void processCreditCard( Multi<CreditCard>  cards){
+    public void processCreditCard(Multi<CreditCard> cards) {
         processCreditCardService.processCreditCards(cards);
-    }
-
-    public static Multi<CreditCard> streamAllCreditCards() {
-        return streamAll();
-    }
-
-    // Assuming that the credit card entity has a field "userId" to identify the user associated with the card
-    public static Multi<CreditCard> streamAllCreditCardsByUserId(String userId) {
-        return stream("userId", userId);
     }
 
     // You can add more methods and properties specific to CreditCard entity as needed
