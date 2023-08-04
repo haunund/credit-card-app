@@ -1,4 +1,4 @@
-package security.authentication.webauthn;
+package security.authentication.webauthn.setup;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Entity;

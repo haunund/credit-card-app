@@ -1,10 +1,11 @@
-package security.authentication.webauthn;
+package security.authentication.webauthn.setup;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import io.smallrye.mutiny.Uni;
 import io.vertx.ext.auth.webauthn.Authenticator;
 import io.vertx.ext.auth.webauthn.PublicKeyCredential;
 import jakarta.persistence.*;
+import security.authentication.webauthn.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class WebAuthnCredential extends PanacheEntity {
     
     // owning side
     @OneToOne
-    public  User user;
+    public User user;
 
     public WebAuthnCredential() {
     }

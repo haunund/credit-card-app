@@ -6,7 +6,7 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import org.bson.types.ObjectId;
 
-import javax.ws.rs.NotFoundException;
+import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 

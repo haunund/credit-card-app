@@ -1,6 +1,5 @@
-package security.denied.webauthn;
+package security.authentication.webauthn;
 
-//import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.security.webauthn.WebAuthnLoginResponse;
 import io.quarkus.security.webauthn.WebAuthnRegisterResponse;
@@ -15,7 +14,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import org.jboss.resteasy.reactive.RestForm;
-import jakarta.persistence.Id;
+import security.authentication.webauthn.setup.WebAuthnCredential;
 
 @Path("")
 public class LoginResource {
@@ -23,6 +22,8 @@ public class LoginResource {
     @Inject
     WebAuthnSecurity webAuthnSecurity;
 
+
+    //Login a user using  webAuthn
     @Path("/login")
     @POST
     @WithTransaction
@@ -61,12 +62,13 @@ public class LoginResource {
         });
     }
 
+    //Register a user using  webAuthn
     @Path("/register")
     @POST
     @WithTransaction
     public Uni<Response> register(@RestForm String userName, 
                                   @BeanParam WebAuthnRegisterResponse webAuthnResponse,
-                                  RoutingContext ctx) {
+                                  RoutingContext routingContext) {
         // Input validation
         if(userName == null || userName.isEmpty()
                 || !webAuthnResponse.isSet()
@@ -80,7 +82,7 @@ public class LoginResource {
                 // Duplicate user
                 return Uni.createFrom().item(Response.status(Status.BAD_REQUEST).build());
             }
-            Uni<Authenticator> authenticator = this.webAuthnSecurity.register(webAuthnResponse, ctx);
+            Uni<Authenticator> authenticator = this.webAuthnSecurity.register(webAuthnResponse, routingContext);
 
             return authenticator
                     // store the user
@@ -94,7 +96,7 @@ public class LoginResource {
                     })
                     .map(newUser -> {
                         // make a login cookie
-                        this.webAuthnSecurity.rememberUser(newUser.userName, ctx);
+                        this.webAuthnSecurity.rememberUser(newUser.userName, routingContext);
                         return Response.ok().build();
                     })
                     // handle login failure

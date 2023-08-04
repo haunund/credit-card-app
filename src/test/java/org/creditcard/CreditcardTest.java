@@ -9,13 +9,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import parsers.CsvParserService;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
+//@Disabled
 class CreditcardTest {
 
     @Inject

@@ -1,4 +1,4 @@
-package security.denied.webauthn;
+package security.authentication.webauthn;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.GET;
@@ -11,7 +11,7 @@ public class UserResource {
 
     @GET
     @RolesAllowed("user")
-    @Path("/me")
+    @Path("/myaccount")
     public String me(@Context SecurityContext securityContext) {
         return securityContext.getUserPrincipal().getName();
     }

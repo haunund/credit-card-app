@@ -1,4 +1,4 @@
-package security.denied.webauthn;
+package security.authentication.webauthn;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import io.smallrye.mutiny.Uni;
+import security.authentication.webauthn.setup.WebAuthnCredential;
 
 @Table(name = "users")
 @Entity

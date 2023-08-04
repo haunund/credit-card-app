@@ -1,4 +1,4 @@
-package security.denied.webauthn;
+package security.authentication.webauthn;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -15,11 +15,11 @@ public class PublicResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String publicResource() {
-        return "public";
+        return "This api is public, everyone can access it";
    }
 
     @GET
-    @Path("/me")
+    @Path("/myaccount")
     @Produces(MediaType.TEXT_PLAIN)
     public String me(@Context SecurityContext securityContext) {
         Principal user = securityContext.getUserPrincipal();

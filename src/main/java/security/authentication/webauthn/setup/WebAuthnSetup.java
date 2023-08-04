@@ -1,4 +1,4 @@
-package security.authentication.webauthn;
+package security.authentication.webauthn.setup;
 
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 
@@ -7,7 +7,7 @@ import io.smallrye.mutiny.Uni;
 import io.vertx.ext.auth.webauthn.AttestationCertificates;
 import io.vertx.ext.auth.webauthn.Authenticator;
 import jakarta.enterprise.context.ApplicationScoped;
-import security.authentication.webauthn.setup.WebAuthnCertificate;
+import security.authentication.webauthn.User;
 
 import java.util.*;
 
