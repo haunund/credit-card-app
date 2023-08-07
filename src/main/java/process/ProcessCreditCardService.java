@@ -1,7 +1,6 @@
 package process;
 
 import entity.CreditCard;
-import entity.models.Card;
 import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntityBase;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
@@ -11,20 +10,19 @@ import org.slf4j.LoggerFactory;
 import parsers.CsvParserService;
 import security.AESEncryptionService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 @ApplicationScoped
 public class ProcessCreditCardService {
 
-    @Inject
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvParserService.class);
+
     @Inject
-    public AESEncryptionService aesEncryptionService;
+    AESEncryptionService aesEncryptionService;
 
     // Method to process all the credit cards
     public void processCreditCards(Multi<CreditCard> creditCards) {
@@ -48,6 +46,8 @@ public class ProcessCreditCardService {
 
     }
 
+    //Common method to process multiple credit card
+
     public void processMultipleCreditCards(ArrayList<CreditCard> creditCards) {
         Multi<CreditCard> multiCreditCards = Multi.createFrom().iterable(creditCards);
         // Now you can use multiCreditCards as a reactive stream for processing
@@ -59,6 +59,8 @@ public class ProcessCreditCardService {
 
                 });
     }
+
+    //Common method to process a single credit card
 
     public Uni<String> processSingleCreditCard(CreditCard creditCard) {
         // Your processing logic for a single CreditCard
@@ -75,6 +77,7 @@ public class ProcessCreditCardService {
     }
 
 
+    //Common method to save all creditcards to mongo database for all of the three services
     public void saveCreditCard(CreditCard creditCard) throws Exception {
 
         CreditCard creditCardEntity = new CreditCard();
@@ -90,10 +93,8 @@ public class ProcessCreditCardService {
         // Now you need to subscribe to the Uni to trigger the processing and persistence
         resultUni.subscribe().with(savedCreditCard -> {
             // Handle the result if needed
-            LOGGER.debug("Saved CreditCard: {}", creditCard);
+            LOGGER.debug("Saved CreditCard: {} ", creditCard);
         });
-
     }
-
 
 }

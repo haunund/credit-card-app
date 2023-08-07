@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import parsers.CsvParserService;
 import process.common.TechnicalRuntimeException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;

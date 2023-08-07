@@ -9,7 +9,7 @@ import parsers.CsvParserService;
 import parsers.XmlParserService;
 import process.common.TechnicalRuntimeException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;

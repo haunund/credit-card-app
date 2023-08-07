@@ -1,16 +1,19 @@
 package security;
 
-import io.quarkus.arc.config.ConfigProperties;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@ConfigProperties(prefix = "encryption")
+@ApplicationScoped
 public class EncryptionConfig {
-    @ConfigProperty(name = "key")
-    public String encryptionKey;
+
+    @ConfigProperty(name = "encryption.key") // Update this with the correct property name
+    String encryptionKey; // Define your encryption key here
 
     public String getEncryptionKey() {
         return encryptionKey;
     }
 
-
+    public void setEncryptionKey(String encryptionKey) {
+        this.encryptionKey = encryptionKey;
+    }
 }

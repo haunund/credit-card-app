@@ -15,9 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import process.common.TechnicalRuntimeException;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.core.Response;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,7 +77,6 @@ public class CsvParserService extends PanacheMongoEntityBase {
         List<CreditCard> creditCards = new ArrayList<>();
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(inputFilename);
 
-
         if (inputStream != null) {
             try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
                 String[] headers = csvReader.readNext(); // Read and ignore the header row
@@ -105,7 +104,6 @@ public class CsvParserService extends PanacheMongoEntityBase {
                         //Check whether the card is valid or not
                         if (Objects.nonNull(card)) {
                             processCreditCardService.saveCreditCard(creditCard);
-
                         }
                         count++;
                     } else {

@@ -10,9 +10,9 @@ import org.bson.types.ObjectId;
 import security.AESEncryptionService;
 import process.ProcessCreditCardService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.NotFoundException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

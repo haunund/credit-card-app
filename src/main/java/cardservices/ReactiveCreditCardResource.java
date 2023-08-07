@@ -10,16 +10,20 @@ import parsers.CsvParserService;
 import parsers.JsonParserService;
 import parsers.XmlParserService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 
 @Path("/creditcards")
 @ApplicationScoped
@@ -49,9 +53,19 @@ CreditCard creditCard;
 
     @GET
     @Path("/latest")
+    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public Uni<List<CustomCreditCard>> getList() {
-        return CustomCreditCard.listAll();
+        return CreditCard.listAll();
+    }
+
+
+    @GET
+    @Path("/latestdenied")
+    @RolesAllowed("admin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<List<CustomCreditCard>> getListDenied() {
+        return CreditCard.listAll();
     }
 
     //Create credit cards
@@ -77,7 +91,7 @@ CreditCard creditCard;
 
         Multi<CreditCard> CreditCards = CreditCard.streamAllCreditCards();
 
-        String creditCardsFileName = "creditcards.xml";
+        String creditCardsFileName = "creditcards.json";
 
         try {
             if (creditCardsFileName.endsWith(".csv")) {
